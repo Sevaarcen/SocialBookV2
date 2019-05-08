@@ -1,4 +1,4 @@
-# SocialBook
+# SocialBook Version 2
 #### The vulnerable Web App for Penetration Test simulations
 
 ## Warning
@@ -12,7 +12,7 @@ Run the following commands to install the pre-requisites and setup SocialBook on
 sudo mkdir /var/www/html
 cd /var/www/html
 sudo rm -rf *
-sudo git clone https://github.com/Sevaarcen/SocialBook.git /var/www/html
+sudo git clone https://github.com/Sevaarcen/SocialBookV2.git /var/www/html
 sudo bash ./setup/install.sh
 ```
 

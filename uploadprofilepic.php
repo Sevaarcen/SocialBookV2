@@ -13,10 +13,10 @@
 	$encoded_username = urlencode($username);
 
 	$target_file = $target_dir.$encoded_username."_".$_FILES["picture"]['name'];
-	
+
 	$filetype = $_FILES['picture']['type'];
-	if (!preg_match('#image/.*#', $filetype)) {
-		$_SESSION['upload_message'] = "Error: bad filetype. It must be an image!";
+	if (!preg_match('#image/.*#', $filetype) || !preg_match("#\.(jpe?g)|(png)|(gif)#")) {
+		$_SESSION['upload_message'] = "Error: bad filetype. It must be a JPEG/JPG, a PNG, or a GIF!";
 		$end_url = "profile.php";
   	ob_start();
   	header('Location: '.$end_url);

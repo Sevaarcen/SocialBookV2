@@ -8,7 +8,7 @@ $databasename = "SocialBook_DB";
 $connection = mysqli_connect($mysql_server, $mysql_username, $mysql_password, $databasename);
 
 // Check connection
-if (mysqli_connect_errno()) {
+if (!$connection) {
     die("Connection failed: " . $connection->connect_error);
 }
 ?>

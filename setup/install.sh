@@ -25,8 +25,9 @@ apt-get install mariadb-server -y > /dev/null #install mariadb since that is bet
 
 echo "Attempting to sync local files with GitHub repository"
 git -C /var/www/html/ fetch origin &> /dev/null
+sleep 0.25
 git -C /var/www/html/ reset --hard origin/master &> /dev/null
-
+sleep 0.5
 
 echo "Instantiating MySQL Database"
 rm -rf /var/lib/mysql/*
@@ -36,9 +37,9 @@ sleep 1
 
 #set up MySQL server
 echo "Setting up MySQL server"
- mysql_password=`head /dev/urandom | tr -dc 'A-Za-z0-9_-' | head -c 36`
+ mysql_password=`head /dev/urandom | tr -dc 'A-Za-z0-9' | head -c 36`
 #update password in the PHP 'database.php' file
- cat /var/www/html/database.php | sed s/CHANGEME/$mysql_password/ | tee /var/www/html/database.php > /dev/null
+ cat /var/www/html/database.php | sed "s/CHANGEME/$mysql_password/" | tee /var/www/html/database.php
 #non-interactive mysql secure installation
  /etc/init.d/mysql stop &> /dev/null #ensure mysql is stopped
  pkill -9 mysqld &> /dev/null #ensure mysql daemon is fully shutdown

@@ -38,30 +38,37 @@ sleep 1
 #set up MySQL server
 echo "Setting up MySQL server"
  mysql_password=`head /dev/urandom | tr -dc 'A-Za-z0-9' | head -c 36`
+
 #update password in the PHP 'database.php' file
- cat /var/www/html/database.php | sed "s/CHANGEME/$mysql_password/" | tee /var/www/html/database.php
+ cat /var/www/html/database.php | sed "s/CHANGEME/$mysql_password/" | tee /var/www/html/temp-database.php > /dev/null
+ mv /var/www/html/temp-database.php /var/www/html/database.php
+
 #non-interactive mysql secure installation
  /etc/init.d/mysql stop &> /dev/null #ensure mysql is stopped
  pkill -9 mysqld &> /dev/null #ensure mysql daemon is fully shutdown
  sleep 0.5
  mysqld_safe --skip-grant-tables --skip-networking & &> /dev/null #start mysql daemon without checking passwords
  sleep 1 #lazy way to wait for mysql daemon to start
+
 #update root password with the randomly generated password
  mysql -u root -e "UPDATE mysql.user SET plugin='mysql_native_password', Password=PASSWORD(\"$mysql_password\") WHERE User='root'; FLUSH PRIVILEGES;" > /dev/null
  sleep 0.5 #making sure the query has time to execute and change the password
  echo "MySQL root password changed"
  pkill -9 mysqld &> /dev/null #kill mysql daemon that doesn't check passwords
  /etc/init.d/mysql start > /dev/null #start mysql with the new password
+
 #delete anonymous users
  mysql -u root -p"$mysql_password" -e "DELETE FROM mysql.user WHERE User='';" > /dev/null
+
 #remove ability for remote root login
  mysql -u root -p"$mysql_password" -e "DELETE FROM mysql.user WHERE User='root' AND HOST NOT IN ('localhost', '127.0.0.1', '::1');" > /dev/null
+
 #delete any test databases
  mysql -u root -p"$mysql_password" -e "DROP DATABASE IF EXISTS test;" > /dev/null
  mysql -u root -p"$mysql_password" -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';" > /dev/null
+
 #update any provilege changes
  mysql -u root -p"$mysql_password" -e "FLUSH PRIVILEGES;" > /dev/null
-
 
 #creating database for SocialBook
 echo "Creating SocialBook database"

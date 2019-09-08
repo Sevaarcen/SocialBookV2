@@ -22,12 +22,12 @@ One it's installed, you can create a new account using false information or use 
 ```
 Default admin credentials
 Username: admin
-Password: c0nn3ction$
+Password: C0nn3ction$
 ```
 
 ### Requirements
 Please refer to the **Installation** section. If installing from the script, no need to install the requirements beforehand.
-* Linux OS (Ubuntu 18.04 LTS recommended)
+* Linux OS (Ubuntu 18.04 LTS recommended - apt-get required)
 * Apache2 (tested on version 2.4.29-1ubuntu4.5)
 * php7.X with mysqli (tested on php7.2 and php7.3)
 * mariadb (tested on version 10.3.12)
